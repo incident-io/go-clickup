@@ -1,4 +1,4 @@
-module github.com/raksul/go-clickup
+module github.com/arkareth/go-clickup
 
 go 1.19
 
