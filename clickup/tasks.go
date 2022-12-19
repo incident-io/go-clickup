@@ -36,7 +36,7 @@ type TaskRequest struct {
 
 type CustomFieldInTaskRequest struct {
 	ID    string `json:"id"`
-	Value int    `json:"value"`
+	Value string `json:"value"`
 }
 
 type Task struct {
@@ -196,7 +196,9 @@ func (s *TasksService) CreateTask(ctx context.Context, listID string, tr *TaskRe
 }
 
 // FIXME: assignees add/rem
-func (s *TasksService) UpdateTask(ctx context.Context, taskID string, opts *GetTaskOptions, tr *TaskRequest) (*Task, *Response, error) {
+func (s *TasksService) UpdateTask(ctx context.Context, taskID string, opts *GetTaskOptions, tr *TaskRequest) (
+	*Task, *Response, error,
+) {
 	u := fmt.Sprintf("task/%v/", taskID)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -285,7 +287,9 @@ func (s *TasksService) GetTask(ctx context.Context, taskID string, opts *GetTask
 // This request will always return paged responses.
 // If you do not include the page parameter, it will return page 0.
 // Each page includes 100 tasks.
-func (s *TasksService) GetFilteredTeamTasks(ctx context.Context, teamID string, opts *GetTasksOptions) ([]Task, *Response, error) {
+func (s *TasksService) GetFilteredTeamTasks(ctx context.Context, teamID string, opts *GetTasksOptions) (
+	[]Task, *Response, error,
+) {
 	u := fmt.Sprintf("team/%s/task", teamID)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -306,7 +310,9 @@ func (s *TasksService) GetFilteredTeamTasks(ctx context.Context, teamID string, 
 	return gtr.Tasks, resp, nil
 }
 
-func (s *TasksService) GetTasksTimeInStatus(ctx context.Context, taskID string, opts *GetTaskOptions) (*TasksInStatus, *Response, error) {
+func (s *TasksService) GetTasksTimeInStatus(ctx context.Context, taskID string, opts *GetTaskOptions) (
+	*TasksInStatus, *Response, error,
+) {
 	u := fmt.Sprintf("task/%v/time_in_status/", taskID)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -328,7 +334,9 @@ func (s *TasksService) GetTasksTimeInStatus(ctx context.Context, taskID string, 
 }
 
 // You must include at least 2 task_ids.
-func (s *TasksService) GetBulkTasksTimeInStatus(ctx context.Context, taskIDs []string, opts *GetBulkTasksTimeInStatusOptions) ([]TasksInStatus, *Response, error) {
+func (s *TasksService) GetBulkTasksTimeInStatus(
+	ctx context.Context, taskIDs []string, opts *GetBulkTasksTimeInStatusOptions,
+) ([]TasksInStatus, *Response, error) {
 
 	if len(taskIDs) < 2 {
 		return nil, nil, fmt.Errorf("you must include at least 2 task_ids. len: %d", len(taskIDs))
