@@ -20,7 +20,7 @@ type UpdateCommentRequest struct {
 }
 
 type CreateCommentResponse struct {
-	ID     string `json:"id"`
+	ID     any    `json:"id"`
 	HistId string `json:"hist_id"`
 	Date   *Date  `json:"date"`
 }
@@ -57,7 +57,9 @@ type Reaction struct {
 }
 
 // If NotifyAll is true, creation notifications will be sent to everyone including the creator of the comment.
-func (s *CommentsService) CreateTaskComment(ctx context.Context, taskID string, opts *TaskCommentOptions, comment *CommentRequest) (*CreateCommentResponse, *Response, error) {
+func (s *CommentsService) CreateTaskComment(
+	ctx context.Context, taskID string, opts *TaskCommentOptions, comment *CommentRequest,
+) (*CreateCommentResponse, *Response, error) {
 	u := fmt.Sprintf("task/%v/comment", taskID)
 	u, err := addOptions(u, opts)
 	if err != nil {
@@ -79,7 +81,9 @@ func (s *CommentsService) CreateTaskComment(ctx context.Context, taskID string, 
 }
 
 // If NotifyAll is true, creation notifications will be sent to everyone including the creator of the comment.
-func (s *CommentsService) CreateChatViewComment(ctx context.Context, viewID string, comment *CommentRequest) (*CreateCommentResponse, *Response, error) {
+func (s *CommentsService) CreateChatViewComment(
+	ctx context.Context, viewID string, comment *CommentRequest,
+) (*CreateCommentResponse, *Response, error) {
 	u := fmt.Sprintf("view/%v/comment", viewID)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
@@ -96,7 +100,9 @@ func (s *CommentsService) CreateChatViewComment(ctx context.Context, viewID stri
 }
 
 // If NotifyAll is true, creation notifications will be sent to everyone including the creator of the comment.
-func (s *CommentsService) CreateListComment(ctx context.Context, listID int, comment *CommentRequest) (*CreateCommentResponse, *Response, error) {
+func (s *CommentsService) CreateListComment(
+	ctx context.Context, listID int, comment *CommentRequest,
+) (*CreateCommentResponse, *Response, error) {
 	u := fmt.Sprintf("list/%v/comment", listID)
 	req, err := s.client.NewRequest("POST", u, comment)
 	if err != nil {
@@ -112,7 +118,9 @@ func (s *CommentsService) CreateListComment(ctx context.Context, listID int, com
 	return ccr, resp, nil
 }
 
-func (s *CommentsService) GetTaskComments(ctx context.Context, taskID string, opts *TaskCommentOptions) ([]Comment, *Response, error) {
+func (s *CommentsService) GetTaskComments(ctx context.Context, taskID string, opts *TaskCommentOptions) (
+	[]Comment, *Response, error,
+) {
 	u := fmt.Sprintf("task/%v/comment", taskID)
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
@@ -160,7 +168,9 @@ func (s *CommentsService) GetListComments(ctx context.Context, listID int) ([]Co
 	return gcr.Comments, resp, nil
 }
 
-func (s *CommentsService) UpdateComment(ctx context.Context, commentID int, comment *UpdateCommentRequest) (*Response, error) {
+func (s *CommentsService) UpdateComment(ctx context.Context, commentID int, comment *UpdateCommentRequest) (
+	*Response, error,
+) {
 	u := fmt.Sprintf("comment/%v", commentID)
 	req, err := s.client.NewRequest("PUT", u, comment)
 	if err != nil {
