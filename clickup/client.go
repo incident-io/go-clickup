@@ -266,6 +266,7 @@ func (c *Client) BareDo(ctx context.Context, req *http.Request) (*Response, erro
 		return nil, errNonNilContext
 	}
 
+	req = req.WithContext(ctx)
 	if bypass := ctx.Value(bypassRateLimitCheck); bypass == nil {
 		// If we've hit rate limit, don't make further requests before Reset time.
 		if err := c.checkRateLimitBeforeDo(req); err != nil {

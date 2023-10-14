@@ -1,6 +1,6 @@
-module github.com/arkareth/go-clickup
+module github.com/incident-io/go-clickup
 
-go 1.19
+go 1.21
 
 require (
 	github.com/google/go-cmp v0.5.8
